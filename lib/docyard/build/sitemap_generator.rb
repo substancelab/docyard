@@ -36,8 +36,7 @@ module Docyard
       end
 
       def build_sitemap(urls)
-        base = config.url || config.build.base
-        base = base.chomp("/")
+        base = site_base
 
         xml = ['<?xml version="1.0" encoding="UTF-8"?>']
         xml << '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
@@ -51,6 +50,16 @@ module Docyard
 
         xml << "</urlset>"
         xml.join("\n")
+      end
+
+      # Returns the prefix for every <loc>: url followed by build.base, unless
+      # url already ends with that base.
+      def site_base
+        base = config.build.base.chomp("/")
+        return base unless config.url
+
+        url = config.url.chomp("/")
+        url.end_with?(base) ? url : "#{url}#{base}"
       end
     end
   end
