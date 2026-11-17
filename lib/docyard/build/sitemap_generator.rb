@@ -36,7 +36,8 @@ module Docyard
       end
 
       def build_sitemap(urls)
-        base = site_base
+        base = config.url || config.build.base
+        base = base.chomp("/")
 
         xml = ['<?xml version="1.0" encoding="UTF-8"?>']
         xml << '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
